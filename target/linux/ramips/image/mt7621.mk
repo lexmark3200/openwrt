@@ -785,6 +785,16 @@ define Device/cudy_wr2100
 endef
 TARGET_DEVICES += cudy_wr2100
 
+define Device/cudy_c200p
+  $(Device/dsa-migration)
+  DEVICE_VENDOR := Cudy
+  DEVICE_MODEL := C200P
+  IMAGE_SIZE := 15872k
+  UIMAGE_NAME := R74
+  DEVICE_PACKAGES := -uboot-envtools
+endef
+TARGET_DEVICES += cudy_c200p
+
 define Device/cudy_r700
   $(Device/dsa-migration)
   DEVICE_VENDOR := Cudy
