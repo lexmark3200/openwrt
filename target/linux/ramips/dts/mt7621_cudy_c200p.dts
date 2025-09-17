@@ -22,12 +22,20 @@
 		bootargs = "console=ttyS0,115200";
 	};
 
+	watchdog {
+		compatible = "linux,wdt-gpio";
+		gpios = <&gpio 10 GPIO_ACTIVE_HIGH>;
+		hw_algo = "toggle";
+		hw_margin_ms = <1000>;
+		always-running;
+	};
+
 	keys {
 		compatible = "gpio-keys";
 
 		reset {
 			label = "reset";
-			gpios = <&gpio 8 GPIO_ACTIVE_LOW>;
+			gpios = <&gpio 16 GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_RESTART>;
 		};
 	};
@@ -37,7 +45,7 @@
 
 		led_internet_blue: internet_blue {
 			label = "blue:internet";
-			gpios = <&gpio 4 GPIO_ACTIVE_LOW>;
+			gpios = <&gpio 15 GPIO_ACTIVE_LOW>;
 		};
 
 		internet_red {
@@ -63,12 +71,12 @@
 
 		lan3 {
 			label = "green:lan3";
-			gpios = <&gpio 16 GPIO_ACTIVE_LOW>;
+			gpios = <&gpio 8 GPIO_ACTIVE_LOW>;
 		};
 
 		lan4 {
 			label = "green:lan4";
-			gpios = <&gpio 15 GPIO_ACTIVE_LOW>;
+			gpios = <&gpio 4 GPIO_ACTIVE_LOW>;
 		};
 	};
 };
@@ -164,7 +172,7 @@
 
 &state_default {
 	gpio {
-		groups = "i2c", "jtag", "uart3", "wdt";
+		groups = "i2c", "jtag", "uart1", "uart2", "uart3", "wdt";
 		function = "gpio";
 	};
 };
@@ -174,8 +182,12 @@
 	label = "wan";
 	phy-handle = <&ethphy4>;
 
-	nvmem-cells = <&macaddr_bdinfo_de00 1>;
+    nvmem-cells = <&macaddr_bdinfo_de00 1>;
 	nvmem-cell-names = "mac-address";
+};
+
+&ethphy4 {
+	/delete-property/ interrupts;
 };
 
 &switch0 {
